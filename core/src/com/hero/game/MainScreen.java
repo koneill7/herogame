@@ -28,6 +28,7 @@ public class MainScreen implements Screen {
     private Stage mainScreen;
     private Texture mainTexture;
     private Image mainImage;
+    private MainStage mainStage;
 
 
     @Override
@@ -37,6 +38,7 @@ public class MainScreen implements Screen {
         orthoCamera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
         mainScreen = new Stage(new FitViewport(SCREEN_WIDTH,SCREEN_HEIGHT, orthoCamera));
         mainScreen.addActor(mainImage);
+        mainStage = new MainStage();
 
         Gdx.input.setInputProcessor(mainScreen);
     }
@@ -45,13 +47,13 @@ public class MainScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        mainScreen.act();
         mainScreen.draw();
+        mainScreen.act(delta);
     }
 
     @Override
     public void resize(int width, int height) {
-        mainScreen.getViewport().update(width, height, true);
+        mainStage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -66,13 +68,14 @@ public class MainScreen implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
         mainTexture.dispose();
         mainScreen.dispose();
+        mainStage.dispose();
 
     }
 }
