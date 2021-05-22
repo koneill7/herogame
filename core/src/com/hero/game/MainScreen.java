@@ -19,36 +19,22 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 //Her-o the Shadow Slayer
 public class MainScreen implements Screen {
-    OrthographicCamera orthoCamera;
-    public static float SCREEN_WIDTH = 1280;
-    public static float SCREEN_HEIGHT = 720;
-    public static float CAMERA_X  = SCREEN_WIDTH/2;
-    public static float CAMERA_Y = SCREEN_HEIGHT/2;
 
-    private Stage mainScreen;
-    private Texture mainTexture;
-    private Image mainImage;
     private MainStage mainStage;
 
 
     @Override
     public void show() {
-        mainTexture = new Texture("background.png");
-        mainImage = new Image(mainTexture);
-        orthoCamera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
-        mainScreen = new Stage(new FitViewport(SCREEN_WIDTH,SCREEN_HEIGHT, orthoCamera));
-        mainScreen.addActor(mainImage);
         mainStage = new MainStage();
-
-        Gdx.input.setInputProcessor(mainScreen);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        mainScreen.draw();
-        mainScreen.act(delta);
+        mainStage.act(delta);
+        mainStage.draw();
+
     }
 
     @Override
@@ -73,8 +59,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
-        mainTexture.dispose();
-        mainScreen.dispose();
+
         mainStage.dispose();
 
     }
