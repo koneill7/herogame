@@ -22,7 +22,7 @@ import javax.xml.bind.Marshaller;
 
 //Her-o the Shadow Slayer
 public class MainScreen implements Screen {
-
+    private Listener listener = new Listener();
     private MainStage mainStage;
     private World world;
 
@@ -37,6 +37,7 @@ public class MainScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         mainStage.act();
         mainStage.draw();
+        world = mainStage.getWorld();
 
     }
 

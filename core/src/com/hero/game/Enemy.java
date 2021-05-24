@@ -39,13 +39,13 @@ public class Enemy extends Actor {
         FixtureDef fixture = new FixtureDef();
 
         enemy.type = BodyDef.BodyType.DynamicBody;
-        enemy.position.set(new Vector2(18F, 1.0F));
+        enemy.position.set(new Vector2(18F, 1.35F));
         Body body = world.createBody(enemy);
         //body.setLinearVelocity(500, 500);
-        enemyShape.setAsBox(1.0F, 1.5F);
+        enemyShape.setAsBox(0.42F, 1.2F);
 
 
-        fixture.density = 0.5F;
+        fixture.density = 10.0F;
         fixture.friction = 0.0F;
         fixture.shape = enemyShape;
 

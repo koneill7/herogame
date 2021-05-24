@@ -42,16 +42,17 @@ public class MainStage extends Stage {
     private Box2DDebugRenderer render;
     Player player;
     Enemy enemy;
-
     private Listener listener = new Listener();
+
     private Boolean moveRight = false;
     private Boolean moveLeft = false;
 
     private Boolean enemyLeft = true;
     private Boolean enemyRight = false;
-    private Texture buttonTextL, buttonTextR;
-    private Drawable buttonDrawL, buttonDrawR;
-    private ImageButton buttonL, buttonR;
+    private Boolean attack = false;
+    private Texture buttonTextL, buttonTextR,attackText;
+    private Drawable buttonDrawL, buttonDrawR, attackDraw;
+    private ImageButton buttonL, buttonR, attackButton;
 
     public MainStage(){
         super(new ExtendViewport(20F, 10F, new OrthographicCamera(20f, 10f)));
@@ -78,12 +79,15 @@ public class MainStage extends Stage {
         enemy.makeEnemy(world);
         this.addActor(enemy);
 
-        ground = worldGen.makeBody(0.0F, -1.0F, 20F, 3F, 0.5F, 0);
-        left = worldGen.makeBody(-1F, 0.0F, 1.0F, 20F, 0.5F, 1);
-        right = worldGen.makeBody(21F, 0.0F, 1.0F, 20F, 0.5F, 2);
+        ground = worldGen.makeBody(0.0F, -0.5F, 20F, 3F, 50.0F, 0);
+        left = worldGen.makeBody(-1F, 0.0F, 1.0F, 20F, 50.0F, 1);
+        right = worldGen.makeBody(21F, 0.0F, 1.0F, 20F, 50.0F, 2);
 
         buttonGen(); //button gen needs to be after player and enemy gen
-        world.setContactListener(new Listener());
+        world.setContactListener(listener);
+
+
+
     }
     @Override public void act(float timeVal){
         super.act(timeVal);
@@ -100,6 +104,9 @@ public class MainStage extends Stage {
         if(enemyLeft){enemy.left();}
         else if(enemyRight){enemy.right();}
         else{enemy.stop();}
+        if(listener.getContactMade() && attack){
+            System.out.println("attack succeeded");
+        }
     }
     @Override public void draw(){
         super.draw();
@@ -109,16 +116,22 @@ public class MainStage extends Stage {
     private void buttonGen(){
         buttonTextL = new Texture("leftbutton.png");
         buttonTextR = new Texture("rightbutton.png");
+        attackText = new Texture("attackbutton.png");
         buttonDrawL = new TextureRegionDrawable(new TextureRegion(buttonTextL));
         buttonDrawR = new TextureRegionDrawable(new TextureRegion(buttonTextR));
+        attackDraw = new TextureRegionDrawable(new TextureRegion(attackText));
         buttonL = new ImageButton(buttonDrawL);
         buttonR = new ImageButton(buttonDrawR);
+        attackButton = new ImageButton(attackDraw);
         buttonL.setSize(0.5F, 0.5F);
         buttonR.setSize(0.5F, 0.5F);
+        attackButton.setSize(0.9F, 0.5F);
         buttonL.setPosition(0.5F, 0.0F);
-        buttonR.setPosition(1.2F, 0.0F);
+        buttonR.setPosition(1.3F, 0.0F);
+        attackButton.setPosition(2.2F, 0.0F);
         this.addActor(buttonL);
         this.addActor(buttonR);
+        this.addActor(attackButton);
         buttonL.addListener(new ActorGestureListener(){
             public void touchDown(InputEvent event, float x, float y, int pointer, int button){ moveLeft = true;}
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){ moveLeft = false; }
@@ -127,6 +140,11 @@ public class MainStage extends Stage {
             public void touchDown(InputEvent event, float x, float y, int pointer, int button){ moveRight = true; }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){ moveRight = false; }
         });
+        attackButton.addListener(new ActorGestureListener(){
+            public void touchDown(InputEvent event, float x, float y, int pointer, int button){ attack = true; }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){ attack = false; }
+        });
+
     }
 
     @Override

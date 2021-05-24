@@ -16,7 +16,7 @@ public class Player extends Actor {
     NewUserData userData;
     private Vector2 moveVect;
     float velocity;
-    private float speed = 20.0F;
+    private float speed = 30.0F;
     private Vector2 jump = new Vector2(0,12F);
     float width, height;
     private Vector2 pos;
@@ -41,13 +41,13 @@ public class Player extends Actor {
         FixtureDef fixture = new FixtureDef();
 
         player.type = BodyDef.BodyType.DynamicBody;
-        player.position.set(new Vector2(3F, 1.0F));
+        player.position.set(new Vector2(3F, 1.5F));
         Body body = world.createBody(player);
         //body.setLinearVelocity(500, 500);
-        playerShape.setAsBox(0.5F, 1.0F);
+        playerShape.setAsBox(0.08F, 0.8F);
 
 
-        fixture.density = 0.5F;
+        fixture.density = 3.0F;
         fixture.friction = 0.0F;
         fixture.shape = playerShape;
 
