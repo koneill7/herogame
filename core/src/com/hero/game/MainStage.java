@@ -30,6 +30,10 @@ public class MainStage extends Stage {
     private Texture mainTexture;
     private Image mainImage;
 
+    public World getWorld() {
+        return world;
+    }
+
     private World world;
     private WorldGen worldGen;
     private Body ground, left, right;
@@ -37,9 +41,14 @@ public class MainStage extends Stage {
     private float step;
     private Box2DDebugRenderer render;
     Player player;
+    Enemy enemy;
 
+    private Listener listener = new Listener();
     private Boolean moveRight = false;
     private Boolean moveLeft = false;
+
+    private Boolean enemyLeft = true;
+    private Boolean enemyRight = false;
     private Texture buttonTextL, buttonTextR;
     private Drawable buttonDrawL, buttonDrawR;
     private ImageButton buttonL, buttonR;
@@ -56,22 +65,25 @@ public class MainStage extends Stage {
 
         world = new World(new Vector2(0, -10), true);
         worldGen = new WorldGen(world);
+        //world.setContactListener(new Listener());
         step = 1/300F;
         actAccum = 0.0F;
         render = new Box2DDebugRenderer();
+
+
         player = new Player();
         player.makePlayer(world);
         this.addActor(player);
 
+        enemy = new Enemy();
+        enemy.makeEnemy(world);
+        this.addActor(enemy);
+
         ground = worldGen.makeBody(0.0F, -1.0F, 20F, 3F, 0.5F, 0);
         left = worldGen.makeBody(-1F, 0.0F, 1.0F, 20F, 0.5F, 1);
         right = worldGen.makeBody(21F, 0.0F, 1.0F, 20F, 0.5F, 2);
-        //this.addActor();
-        //this.addActor();
 
-
-
-        buttonGen();
+        buttonGen(); //button gen needs to be after player and enemy gen
     }
     @Override public void act(float timeVal){
         super.act(timeVal);
@@ -84,6 +96,10 @@ public class MainStage extends Stage {
         if(moveLeft){player.left();}
         else if(moveRight){player.right();}
         else{player.stop();}
+
+        if(enemyLeft){enemy.left();}
+        else if(enemyRight){enemy.right();}
+        else{enemy.stop();}
     }
     @Override public void draw(){
         super.draw();
@@ -104,8 +120,7 @@ public class MainStage extends Stage {
         this.addActor(buttonL);
         this.addActor(buttonR);
         buttonL.addListener(new ActorGestureListener(){
-            public void touchDown(InputEvent event, float x, float y, int pointer, int button){ moveLeft = true;
-            System.out.println("left");}
+            public void touchDown(InputEvent event, float x, float y, int pointer, int button){ moveLeft = true;}
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){ moveLeft = false; }
         });
         buttonR.addListener(new ActorGestureListener(){

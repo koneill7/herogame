@@ -26,12 +26,9 @@ public class Player extends Actor {
     Boolean left = false;
     Boolean start = true;
 
-    private Sprite sprite;
-
     public Player(){
         this.width = 1.0F;
         this.height = 2.0F;
-        this.sprite = new Sprite(playerTextR);
     }
     Body playerBod;
     public void injured(){
@@ -44,10 +41,10 @@ public class Player extends Actor {
         FixtureDef fixture = new FixtureDef();
 
         player.type = BodyDef.BodyType.DynamicBody;
-        player.position.set(new Vector2(10F, 4F));
+        player.position.set(new Vector2(3F, 1.0F));
         Body body = world.createBody(player);
         //body.setLinearVelocity(500, 500);
-        playerShape.setAsBox(0.5F, 1.5F);
+        playerShape.setAsBox(0.5F, 1.0F);
 
 
         fixture.density = 0.5F;

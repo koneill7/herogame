@@ -1,19 +1,21 @@
 package com.hero.game;
-
-public class UserData {
+import com.hero.game.UserDataType;
+class UserData{
     private float width;
     private float height;
-    private int dataType;
-    //set dataType to 0 = ground, 1 = leftWall, 2 = rightWall
-    public UserData(float width, float height, int dataType) {
-        this.width = width;
-        this.height = height;
-        this.dataType = dataType;
+
+    public int getUserDataType() {
+        return userDataType;
     }
 
-    public int getDataType() {
-        return dataType;
+    private int userDataType;
+    //set dataType to 0 = ground, 1 = leftWall, 2 = rightWall
+    public UserData(float width, float height, int datatype){
+        this.width = width;
+        this.height = height;
+        this.userDataType = datatype;
     }
+
 
     public float getHeight() {
         return height;
