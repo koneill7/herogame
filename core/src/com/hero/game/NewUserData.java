@@ -1,19 +1,22 @@
 package com.hero.game;
 import com.hero.game.UserDataType;
-class UserData{
+class NewUserData extends UserData{
     private float width;
     private float height;
 
-    public int getUserDataType() {
+    public UserDataType getUserDataType() {
         return userDataType;
     }
 
-    private int userDataType;
+    //public int userDataType;
     //set dataType to 0 = ground, 1 = leftWall, 2 = rightWall
-    public UserData(float width, float height, int datatype){
-        this.width = width;
-        this.height = height;
-        this.userDataType = datatype;
+    public NewUserData(float width, float height, int datatype){
+        super(width, height);
+        if(datatype == 0){this.userDataType = UserDataType.GROUND;}
+        else if(datatype == 1){this.userDataType = UserDataType.LEFTWALL;}
+        else if(datatype == 2){this.userDataType = UserDataType.RIGHTWALL;}
+        else if(datatype == 3){this.userDataType = UserDataType.HERO;}
+        else if(datatype == 4){this.userDataType = UserDataType.ENEMY;}
     }
 
 

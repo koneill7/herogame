@@ -65,7 +65,6 @@ public class MainStage extends Stage {
 
         world = new World(new Vector2(0, -10), true);
         worldGen = new WorldGen(world);
-        //world.setContactListener(new Listener());
         step = 1/300F;
         actAccum = 0.0F;
         render = new Box2DDebugRenderer();
@@ -84,6 +83,7 @@ public class MainStage extends Stage {
         right = worldGen.makeBody(21F, 0.0F, 1.0F, 20F, 0.5F, 2);
 
         buttonGen(); //button gen needs to be after player and enemy gen
+        world.setContactListener(new Listener());
     }
     @Override public void act(float timeVal){
         super.act(timeVal);

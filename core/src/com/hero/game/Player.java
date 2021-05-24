@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Player extends Actor {
     int health = 100;
-    UserData userData;
+    NewUserData userData;
     private Vector2 moveVect;
     float velocity;
     private float speed = 20.0F;
@@ -51,8 +51,8 @@ public class Player extends Actor {
         fixture.friction = 0.0F;
         fixture.shape = playerShape;
 
-        this.userData = new UserData(this.width, this.height, 3);
-        body.setUserData(userData); //dataType 3 for player
+        this.userData = new NewUserData(this.width, this.height, 3);
+        body.setUserData(this.userData); //dataType 3 for player
         body.createFixture(fixture);
         body.resetMassData();
         body.setGravityScale(5F);

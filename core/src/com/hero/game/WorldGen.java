@@ -22,7 +22,7 @@ public class WorldGen {
         PolygonShape box = new PolygonShape();
         box.setAsBox(halfW, halfH);
         newBody.createFixture(box, density);
-        newBody.setUserData(new UserData(2* halfW, 2 * halfH, dataType));
+        newBody.setUserData(new NewUserData(2* halfW, 2 * halfH, dataType));
         box.dispose();
         return newBody;
     }

@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Enemy extends Actor {
     int health = 100;
-    UserData userData;
+    NewUserData userData;
     private Vector2 moveVect;
     float velocity;
     private float speed = 20.0F;
@@ -49,8 +49,8 @@ public class Enemy extends Actor {
         fixture.friction = 0.0F;
         fixture.shape = enemyShape;
 
-        this.userData = new UserData(this.width, this.height, 4);
-        body.setUserData(userData); //dataType 4 for enemy
+        this.userData = new NewUserData(this.width, this.height, 4);
+        body.setUserData(this.userData); //dataType 4 for enemy
         body.createFixture(fixture);
         body.resetMassData();
         body.setGravityScale(5F);
