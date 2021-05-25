@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class Listener implements ContactListener {
     private Boolean contactMade = false;
+    private Boolean groundContact = false;
     @Override
     public void beginContact(Contact contact){
         if(contact.getFixtureA().getBody().getUserData() != null){
@@ -17,18 +18,25 @@ public class Listener implements ContactListener {
                 UserDataType typeB = fixB.userDataType;
 
                 if((typeA == UserDataType.HERO && typeB == UserDataType.ENEMY) || (typeA == UserDataType.ENEMY && typeB == UserDataType.HERO)){
-                    System.out.println("collided with enemy");
                     contactMade = true;
-
+                }
+                else if((typeA == UserDataType.HERO && typeB == UserDataType.GROUND) || (typeB == UserDataType.HERO && typeA == UserDataType.GROUND)){
+                    groundContact = true;
                 }
 
             }
         }
 
     }
+
+    public Boolean getGroundContact() {
+        return groundContact;
+    }
+
     @Override
     public void endContact(Contact contact){
         contactMade = false;
+        groundContact = false;
     }
 
     @Override

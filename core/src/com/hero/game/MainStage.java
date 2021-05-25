@@ -3,7 +3,9 @@ package com.hero.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -45,9 +47,7 @@ public class MainStage extends Stage {
     Enemy enemy;
     private Listener listener = new Listener();
 
-    FreeTypeFont generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/timesBold.ttf"));
-    FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
+    Batch batch = getBatch();
     private Boolean moveRight = false;
     private Boolean moveLeft = false;
     private Boolean jumping = false;
@@ -59,18 +59,18 @@ public class MainStage extends Stage {
     private Drawable buttonDrawL, buttonDrawR, attackDraw, jumpDraw;
     private ImageButton buttonL, buttonR, attackButton, jumpButton;
 
-    private int score = 0;
-    private String newScore = "Score: 0";
-    BitmapFont bitmapFont = new BitmapFont();
+    private int score;
+    private String newScore;
+    BitmapFont bitmapFont;
 
     public MainStage(){
-        super(new ExtendViewport(20F, 10F, new OrthographicCamera(20f, 10f)));
+        super(new ExtendViewport(200F, 100F, new OrthographicCamera(200f, 100f)));
         Gdx.input.setInputProcessor(this);
 
         mainTexture = new Texture("background.png");
         mainImage = new Image(mainTexture);
-        mainImage.setWidth(20F);
-        mainImage.setHeight(10F);
+        mainImage.setWidth(200F);
+        mainImage.setHeight(100F);
         this.addActor(mainImage);
 
         world = new World(new Vector2(0, -10), true);
@@ -88,14 +88,16 @@ public class MainStage extends Stage {
         enemy.makeEnemy(world);
         this.addActor(enemy);
 
-        ground = worldGen.makeBody(0.0F, -0.5F, 20F, 3F, 50.0F, 0);
-        left = worldGen.makeBody(-1F, 0.0F, 1.0F, 20F, 50.0F, 1);
-        right = worldGen.makeBody(21F, 0.0F, 1.0F, 20F, 50.0F, 2);
+        ground = worldGen.makeBody(0.0F, -10F, 200F, 30F, 50.0F, 0);
+        left = worldGen.makeBody(-10F, 0.0F, 10.0F, 200F, 50.0F, 1);
+        right = worldGen.makeBody(210F, 0.0F, 10.0F, 200F, 50.0F, 2);
 
         buttonGen(); //button gen needs to be after player and enemy gen
         world.setContactListener(listener);
 
-
+        score = 0;
+        newScore = "Score: 0";
+        bitmapFont = new BitmapFont();
 
     }
     @Override public void act(float timeVal){
@@ -132,7 +134,7 @@ public class MainStage extends Stage {
 
         }
         if(listener.getContactMade() && attack){
-            enemy.injured(15);
+            enemy.injured(50);
         }
 
         if(listener.getGroundContact()){
@@ -142,11 +144,13 @@ public class MainStage extends Stage {
     @Override public void draw(){
         super.draw();
         render.render(world, getViewport().getCamera().combined);
-        getBatch().begin();
+        String scoreStr =String.valueOf(score);
+
+        batch.begin();
         bitmapFont.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-        bitmapFont.draw(getBatch(), newScore, 8, 10);
-        bitmapFont.getData().setScale(3.0F,0.05F);
-        getBatch().end();
+        bitmapFont.draw(batch, "Score: "+ score, 20, 80);
+        bitmapFont.getData().setScale(0.5F);
+        batch.end();
     }
 
     private void buttonGen(){
@@ -162,14 +166,14 @@ public class MainStage extends Stage {
         buttonR = new ImageButton(buttonDrawR);
         attackButton = new ImageButton(attackDraw);
         jumpButton = new ImageButton(jumpDraw);
-        buttonL.setSize(0.5F, 0.5F);
-        buttonR.setSize(0.5F, 0.5F);
-        attackButton.setSize(0.9F, 0.5F);
-        jumpButton.setSize(0.5F, 0.5F);
-        buttonL.setPosition(0.5F, 0.0F);
-        buttonR.setPosition(1.3F, 0.0F);
-        attackButton.setPosition(2.2F, 0.0F);
-        jumpButton.setPosition(3.1F, 0.0F);
+        buttonL.setSize(5F, 5F);
+        buttonR.setSize(5F, 5F);
+        attackButton.setSize(9F, 5F);
+        jumpButton.setSize(5F, 5F);
+        buttonL.setPosition(5F, 5F);
+        buttonR.setPosition(13F, 5F);
+        attackButton.setPosition(22F, 5F);
+        jumpButton.setPosition(31F, 5F);
         this.addActor(buttonL);
         this.addActor(buttonR);
         this.addActor(attackButton);

@@ -15,7 +15,7 @@ public class Enemy extends Actor {
     NewUserData userData;
     private Vector2 moveVect;
     float velocity;
-    private float speed = 20.0F;
+    private float speed = 100.0F;
     float width, height;
     private Vector2 pos;
     private Texture playerTextL = new Texture("shadow.png");
@@ -29,8 +29,8 @@ public class Enemy extends Actor {
         health  -= damage;
     }
     public Enemy(){
-        this.width = 2.0F;
-        this.height = 3.0F;
+        this.width = 20.0F;
+        this.height = 30.0F;
     }
     Body body;
     public void makeEnemy(World world){
@@ -39,14 +39,15 @@ public class Enemy extends Actor {
         FixtureDef fixture = new FixtureDef();
 
         enemy.type = BodyDef.BodyType.DynamicBody;
-        enemy.position.set(new Vector2(18F, 1.35F));
+        enemy.position.set(new Vector2(150F, 30F));
         Body body = world.createBody(enemy);
         //body.setLinearVelocity(500, 500);
-        enemyShape.setAsBox(0.42F, 1.2F);
+        enemyShape.setAsBox(4.2F, 12F);
 
 
-        fixture.density = 10.0F;
-        fixture.friction = 0.0F;
+        //fixture.density = 10.0F;
+        //fixture.friction = 0.0F;
+        //fixture.restitution = 0.0F;
         fixture.shape = enemyShape;
 
         this.userData = new NewUserData(this.width, this.height, 4);
@@ -87,6 +88,7 @@ public class Enemy extends Actor {
     public Body getBody() {
         return this.body;
     }
+    public int getHealth(){ return this.health; }
     @Override
     public void draw(Batch batch, float alpha){
         pos = this.body.getPosition();

@@ -1,8 +1,15 @@
 package com.hero.game;
+import com.badlogic.gdx.math.Vector2;
 import com.hero.game.UserDataType;
 class NewUserData extends UserData{
     private float width;
     private float height;
+
+    public Vector2 getJumpingImpulse() {
+        return jumpingImpulse;
+    }
+
+    private Vector2 jumpingImpulse;
 
     public UserDataType getUserDataType() {
         return userDataType;
@@ -17,8 +24,11 @@ class NewUserData extends UserData{
         else if(datatype == 2){this.userDataType = UserDataType.RIGHTWALL;}
         else if(datatype == 3){this.userDataType = UserDataType.HERO;}
         else if(datatype == 4){this.userDataType = UserDataType.ENEMY;}
+        jumpingImpulse = new Vector2(0, 10F);
     }
-
+    public void setJumpingImpulse(Vector2 jumpingImpulse){
+        this.jumpingImpulse = jumpingImpulse;
+    }
 
     public float getHeight() {
         return height;

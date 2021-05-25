@@ -16,8 +16,8 @@ public class Player extends Actor {
     NewUserData userData;
     private Vector2 moveVect;
     float velocity;
-    private float speed = 30.0F;
-    private Vector2 jump = new Vector2(0,12F);
+    private float speed = 500.0F;
+    private Vector2 jump = new Vector2(0,2000F);
     float width, height;
     private Vector2 pos;
     private Texture playerTextL = new Texture("playerswordleft.png");
@@ -25,14 +25,28 @@ public class Player extends Actor {
     Boolean right = false;
     Boolean left = false;
     Boolean start = true;
+    private Boolean landed = false;
+    private Boolean jumping = false;
 
     public Player(){
-        this.width = 1.0F;
-        this.height = 2.0F;
+        this.width = 10.0F;
+        this.height = 20.0F;
     }
     Body playerBod;
     public void injured(){
         health -= 10;
+    }
+
+    public void jump(){
+        if(!jumping){
+            playerBod.applyLinearImpulse(((NewUserData)getUserData()).getJumpingImpulse(), playerBod.getWorldCenter(), true);
+            jumping = true;
+            landed = false;
+        }
+    }
+    public void land(){
+        jumping = false;
+        landed = true;
     }
 
     public void makePlayer(World world){
@@ -41,14 +55,15 @@ public class Player extends Actor {
         FixtureDef fixture = new FixtureDef();
 
         player.type = BodyDef.BodyType.DynamicBody;
-        player.position.set(new Vector2(3F, 1.5F));
+        player.position.set(new Vector2(10F, 25F));
         Body body = world.createBody(player);
         //body.setLinearVelocity(500, 500);
-        playerShape.setAsBox(0.08F, 0.8F);
+        playerShape.setAsBox(0.8F, 8.0F);
 
 
-        fixture.density = 3.0F;
-        fixture.friction = 0.0F;
+        //fixture.density = 40.0F;
+        //fixture.friction = 0.0F;
+        //fixture.restitution = 0.0F;
         fixture.shape = playerShape;
 
         this.userData = new NewUserData(this.width, this.height, 3);
@@ -82,7 +97,7 @@ public class Player extends Actor {
         playerBod.applyLinearImpulse(moveVect, playerBod.getWorldCenter(), true);
     }
     public void stop(){
-        velocity = 0.0F - playerBod.getLinearVelocity().x;
+        velocity = 0.0F- playerBod.getLinearVelocity().x;
         moveVect = new Vector2(velocity, 0.0F);
         playerBod.applyLinearImpulse(moveVect, playerBod.getWorldCenter(), true);
     }

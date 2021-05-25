@@ -39,6 +39,7 @@ public class MainScreen implements Screen {
         mainStage.draw();
         world = mainStage.getWorld();
 
+
     }
 
     @Override
