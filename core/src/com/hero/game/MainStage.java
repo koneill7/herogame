@@ -33,6 +33,8 @@ public class MainStage extends Stage {
     private Texture mainTexture;
     private Image mainImage;
 
+    private int health = 1000;
+    private Boolean injured = false;
     public World getWorld() {
         return world;
     }
@@ -113,6 +115,8 @@ public class MainStage extends Stage {
         else{player.stop();}
 
         if(enemy != null){
+            enemyLeft = enemy.left;
+            enemyRight = enemy.right;
             if(enemyLeft){enemy.left();}
             else if(enemyRight){enemy.right();}
             else{enemy.stop();}
@@ -129,9 +133,19 @@ public class MainStage extends Stage {
             }
         }
 
+        if(player != null){
+            if(player.health < 1){
+                player.remove();
+                world.destroyBody(player.playerBod);
+                injured = true;
+            }
+        }
+
         if(listener.getContactMade() && !attack){
             player.injured();
-
+            health -= 5;
+            if(enemyLeft) enemy.right();
+            else if (enemyRight) enemy.left();
         }
         if(listener.getContactMade() && attack){
             enemy.injured(50);
@@ -146,9 +160,20 @@ public class MainStage extends Stage {
         render.render(world, getViewport().getCamera().combined);
         String scoreStr =String.valueOf(score);
 
+
         batch.begin();
+        bitmapFont.setColor(1.0F, 0.0F, 0.0F, 1.0F);
+        bitmapFont.draw(batch, "Health: "+ health, 150, 95);
+        bitmapFont.getData().setScale(0.5F);
+
+        if(injured){
+            bitmapFont.setColor(0.0F, 0.0F, 1.0F, 1.0F);
+            bitmapFont.draw(batch, "Game Over!", 70, 60);
+            bitmapFont.getData().setScale(0.7F);
+        }
+
         bitmapFont.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-        bitmapFont.draw(batch, "Score: "+ score, 20, 80);
+        bitmapFont.draw(batch, "Score: "+ score, 1, 95);
         bitmapFont.getData().setScale(0.5F);
         batch.end();
     }
@@ -166,14 +191,14 @@ public class MainStage extends Stage {
         buttonR = new ImageButton(buttonDrawR);
         attackButton = new ImageButton(attackDraw);
         jumpButton = new ImageButton(jumpDraw);
-        buttonL.setSize(5F, 5F);
-        buttonR.setSize(5F, 5F);
-        attackButton.setSize(9F, 5F);
-        jumpButton.setSize(5F, 5F);
-        buttonL.setPosition(5F, 5F);
-        buttonR.setPosition(13F, 5F);
-        attackButton.setPosition(22F, 5F);
-        jumpButton.setPosition(31F, 5F);
+        buttonL.setSize(8F, 8F);
+        buttonR.setSize(8F, 8F);
+        attackButton.setSize(12F, 8F);
+        jumpButton.setSize(8F, 8F);
+        buttonL.setPosition(8F, 8F);
+        buttonR.setPosition(16F, 8F);
+        attackButton.setPosition(23F, 8F);
+        jumpButton.setPosition(35F, 8F);
         this.addActor(buttonL);
         this.addActor(buttonR);
         this.addActor(attackButton);
@@ -194,11 +219,13 @@ public class MainStage extends Stage {
             public void touchDown(InputEvent event, float x, float y, int pointer, int button){player.jump();}
         });
 
+
+
     }
 
     @Override
     public void dispose(){
         mainTexture.dispose();
-        mainScreen.dispose();
+        //mainScreen.dispose();
     }
 }

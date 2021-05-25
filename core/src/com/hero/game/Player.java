@@ -12,12 +12,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Player extends Actor {
-    int health = 100;
+    int health = 1000;
     NewUserData userData;
     private Vector2 moveVect;
     float velocity;
     private float speed = 500.0F;
-    private Vector2 jump = new Vector2(0,2000F);
+    private Vector2 jump = new Vector2(0,70F);
     float width, height;
     private Vector2 pos;
     private Texture playerTextL = new Texture("playerswordleft.png");
@@ -34,12 +34,12 @@ public class Player extends Actor {
     }
     Body playerBod;
     public void injured(){
-        health -= 10;
+        health -= 5;
     }
 
     public void jump(){
         if(!jumping){
-            playerBod.applyLinearImpulse(((NewUserData)getUserData()).getJumpingImpulse(), playerBod.getWorldCenter(), true);
+            playerBod.applyLinearImpulse(jump, playerBod.getWorldCenter(), true);
             jumping = true;
             landed = false;
         }
