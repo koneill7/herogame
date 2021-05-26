@@ -15,7 +15,7 @@ public class Enemy extends Actor {
     NewUserData userData;
     private Vector2 moveVect;
     float velocity;
-    private float speed = 100.0F;
+    private float speed = 250.0F;
     float width, height;
     private Vector2 pos;
     private Texture playerTextL = new Texture("shadow.png");
@@ -44,10 +44,6 @@ public class Enemy extends Actor {
         //body.setLinearVelocity(500, 500);
         enemyShape.setAsBox(4.2F, 12F);
 
-
-        //fixture.density = 10.0F;
-        //fixture.friction = 0.0F;
-        //fixture.restitution = 0.0F;
         fixture.shape = enemyShape;
 
         this.userData = new NewUserData(this.width, this.height, 4);
@@ -61,8 +57,7 @@ public class Enemy extends Actor {
         pos = this.body.getPosition();
     }
     public void right(){
-        //float X = pos.x + 5;
-        //pos = new Vector2(X, pos.y);
+
         right = true;
         left = false;
         velocity = this.speed - this.body.getLinearVelocity().x;

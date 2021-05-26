@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 public class Listener implements ContactListener {
     private Boolean contactMade = false;
     private Boolean groundContact = false;
+    private Boolean leftContact = false;
+    private Boolean rightContact = false;
     @Override
     public void beginContact(Contact contact){
         if(contact.getFixtureA().getBody().getUserData() != null){
@@ -23,8 +25,13 @@ public class Listener implements ContactListener {
                 else if((typeA == UserDataType.HERO && typeB == UserDataType.GROUND) || (typeB == UserDataType.HERO && typeA == UserDataType.GROUND)){
                     groundContact = true;
                 }
-
+                else if((typeA == UserDataType.LEFTWALL && typeB == UserDataType.ENEMY) || (typeB == UserDataType.LEFTWALL && typeA == UserDataType.ENEMY))
+                    leftContact = true;
+                else if((typeA == UserDataType.RIGHTWALL && typeB == UserDataType.ENEMY) || (typeB == UserDataType.RIGHTWALL && typeA == UserDataType.ENEMY)){
+                    rightContact = true;
+                }
             }
+
         }
 
     }
@@ -33,6 +40,12 @@ public class Listener implements ContactListener {
         return groundContact;
     }
 
+    public Boolean getLeftContact() {
+        return leftContact;
+    }
+    public Boolean getRightContact() {
+        return rightContact;
+    }
     @Override
     public void endContact(Contact contact){
         contactMade = false;

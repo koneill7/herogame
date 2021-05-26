@@ -1,6 +1,8 @@
 package com.hero.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -21,6 +23,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+
+import org.omg.CORBA.PRIVATE_MEMBER;
 
 public class MainStage extends Stage {
     OrthographicCamera orthoCamera;
@@ -61,12 +65,16 @@ public class MainStage extends Stage {
     private Drawable buttonDrawL, buttonDrawR, attackDraw, jumpDraw;
     private ImageButton buttonL, buttonR, attackButton, jumpButton;
 
+    private Game game;
+    private Preferences preferences;
     private int score;
     private String newScore;
     BitmapFont bitmapFont;
 
-    public MainStage(){
+    public MainStage(Game game, Preferences preferences){
         super(new ExtendViewport(200F, 100F, new OrthographicCamera(200f, 100f)));
+        this.game = game;
+        this.preferences = preferences;
         Gdx.input.setInputProcessor(this);
 
         mainTexture = new Texture("background.png");
@@ -135,9 +143,13 @@ public class MainStage extends Stage {
 
         if(player != null){
             if(player.health < 1){
-                player.remove();
-                world.destroyBody(player.playerBod);
                 injured = true;
+                int scoreComp = preferences.getInteger("High score: ", 0);
+                if(score > scoreComp){
+                    preferences.putInteger("High score: ", score);
+                    preferences.flush();
+                }
+                this.game.setScreen(new EndGameScreen(preferences));
             }
         }
 
@@ -154,6 +166,12 @@ public class MainStage extends Stage {
         if(listener.getGroundContact()){
             player.land();
         }
+        if(listener.getLeftContact()){
+            enemy.right();
+        }
+        if(listener.getRightContact()){
+            enemy.left();
+        }
     }
     @Override public void draw(){
         super.draw();
@@ -166,11 +184,6 @@ public class MainStage extends Stage {
         bitmapFont.draw(batch, "Health: "+ health, 150, 95);
         bitmapFont.getData().setScale(0.5F);
 
-        if(injured){
-            bitmapFont.setColor(0.0F, 0.0F, 1.0F, 1.0F);
-            bitmapFont.draw(batch, "Game Over!", 70, 60);
-            bitmapFont.getData().setScale(0.7F);
-        }
 
         bitmapFont.setColor(1.0F, 1.0F, 1.0F, 1.0F);
         bitmapFont.draw(batch, "Score: "+ score, 1, 95);
@@ -228,4 +241,5 @@ public class MainStage extends Stage {
         mainTexture.dispose();
         //mainScreen.dispose();
     }
+
 }

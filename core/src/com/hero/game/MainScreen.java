@@ -2,6 +2,7 @@ package com.hero.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -26,9 +27,17 @@ public class MainScreen implements Screen {
     private MainStage mainStage;
     private World world;
 
+    private Game game;
+    private Preferences preferences;
+
+    MainScreen(Game game, Preferences preferences){
+        this.game = game;
+        this.preferences = preferences;
+    }
+
     @Override
     public void show() {
-        mainStage = new MainStage();
+        mainStage = new MainStage(this.game, this.preferences);
     }
 
     @Override
@@ -38,7 +47,6 @@ public class MainScreen implements Screen {
         mainStage.act();
         mainStage.draw();
         world = mainStage.getWorld();
-
 
     }
 

@@ -17,7 +17,7 @@ public class Player extends Actor {
     private Vector2 moveVect;
     float velocity;
     private float speed = 500.0F;
-    private Vector2 jump = new Vector2(0,70F);
+    private Vector2 jump = new Vector2(0,300F);
     float width, height;
     private Vector2 pos;
     private Texture playerTextL = new Texture("playerswordleft.png");
@@ -57,20 +57,16 @@ public class Player extends Actor {
         player.type = BodyDef.BodyType.DynamicBody;
         player.position.set(new Vector2(10F, 25F));
         Body body = world.createBody(player);
-        //body.setLinearVelocity(500, 500);
+
         playerShape.setAsBox(0.8F, 8.0F);
 
-
-        //fixture.density = 40.0F;
-        //fixture.friction = 0.0F;
-        //fixture.restitution = 0.0F;
         fixture.shape = playerShape;
 
         this.userData = new NewUserData(this.width, this.height, 3);
         body.setUserData(this.userData); //dataType 3 for player
         body.createFixture(fixture);
         body.resetMassData();
-        body.setGravityScale(5F);
+        body.setGravityScale(140F);
         playerShape.dispose();
 
         playerBod = body;
@@ -78,8 +74,6 @@ public class Player extends Actor {
     }
 
     public void right(){
-        //float X = pos.x + 5;
-        //pos = new Vector2(X, pos.y);
         start = false;
         right = true;
         left = false;
