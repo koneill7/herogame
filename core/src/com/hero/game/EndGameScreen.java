@@ -3,6 +3,7 @@ package com.hero.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,6 +26,7 @@ public class EndGameScreen  extends ScreenAdapter {
     private Texture screenText;
     private Image screenImage;
     private Stage endScreen;
+    Music music = Gdx.audio.newMusic(Gdx.files.internal("skyward.mp3"));
 
     EndGameScreen(Preferences preferences){
         this.preferences = preferences;
@@ -39,6 +41,7 @@ public class EndGameScreen  extends ScreenAdapter {
         screenImage = new Image(screenText);
         endScreen.addActor(screenImage);
         this.score = preferences.getInteger("High score: ", 0);
+        music.play();
     }
 
     @Override
@@ -60,5 +63,9 @@ public class EndGameScreen  extends ScreenAdapter {
     @Override
     public void resize(int width, int height){
         endScreen.getViewport().update(width, height, true);
+    }
+    @Override
+    public void dispose(){
+        music.dispose();
     }
 }

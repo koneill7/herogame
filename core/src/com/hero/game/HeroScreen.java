@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,7 +28,7 @@ public class HeroScreen implements Screen {
     public static float SCREEN_HEIGHT = 720;
     private Hero game;
     private Preferences preferences;
-
+    Music openingSong = Gdx.audio.newMusic(Gdx.files.internal("chamberofgoddess.mp3"));
     private Stage titleScreen;
     private Texture heroTexture;
     private Texture playTexture, instText;
@@ -64,15 +66,19 @@ public class HeroScreen implements Screen {
         playButton.setPosition(SCREEN_WIDTH/2 - 200, 10);
         playButton.addListener(new ClickListener(){
             public void clicked(InputEvent input, float x, float y){
+                openingSong.stop();
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MainScreen(game, preferences));
             }
         });
         instButton.setPosition(SCREEN_WIDTH/2 + 200, 10);
         instButton.addListener(new ClickListener(){
             public void clicked(InputEvent input, float x, float y){
+                openingSong.stop();
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new InstructionScreen(game, preferences));
             }
         });
+        openingSong.setVolume(1.0F);
+        openingSong.play();
     }
 
     @Override
@@ -109,6 +115,7 @@ public class HeroScreen implements Screen {
     public void dispose() {
         heroTexture.dispose();
         titleScreen.dispose();
+        openingSong.dispose();
 
     }
 }

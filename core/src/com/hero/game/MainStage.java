@@ -3,6 +3,7 @@ package com.hero.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -32,7 +33,7 @@ public class MainStage extends Stage {
     public static float SCREEN_HEIGHT = 720;
     public static float CAMERA_X  = SCREEN_WIDTH/2;
     public static float CAMERA_Y = SCREEN_HEIGHT/2;
-
+    Music music = Gdx.audio.newMusic(Gdx.files.internal("thunderstruck.mp3"));
     private Stage mainScreen;
     private Texture mainTexture;
     private Image mainImage;
@@ -108,6 +109,7 @@ public class MainStage extends Stage {
         score = 0;
         newScore = "Score: 0";
         bitmapFont = new BitmapFont();
+        music.play();
 
     }
     @Override public void act(float timeVal){
@@ -149,6 +151,7 @@ public class MainStage extends Stage {
                     preferences.putInteger("High score: ", score);
                     preferences.flush();
                 }
+                music.stop();
                 this.game.setScreen(new EndGameScreen(preferences));
             }
         }
@@ -239,6 +242,7 @@ public class MainStage extends Stage {
     @Override
     public void dispose(){
         mainTexture.dispose();
+        music.dispose();
         //mainScreen.dispose();
     }
 
